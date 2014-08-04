@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <style type="text/css">
+        .my-box { border:1px solid; padding:10px; }
+    </style>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body align = "center">
+
+<div class= "my-box">
+    {{ total }} 원
+</div>
+
+<a href="{{ url_for('add_money') }} " >
+        <button>+10</button>
+    </a>
+
+<a href="{{ url_for('wd_money') }} " >
+        <button>-10</button>
+    </a>
+
+
+</body>
+</html>

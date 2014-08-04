@@ -1,0 +1,20 @@
+<!doctype html>
+<head>
+<title>Money count</title>
+<link rel='stylesheet' type='text/css' href="{{ url_for('static', filename='css/style.css') }}">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<meta charset="UTF-8" />
+</head>
+
+<body>
+	<div class=page>
+        저축: <a href="{{url_for('plus_money')}}">
+        <button>+100</button></a>
+   		지출: <a href="{{url_for('dis_money')}}">
+        <button>-100</button></a>
+        <br>
+        잔금: {{entries}}
+	</div>
+</body>
+</html>
+

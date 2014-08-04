@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <form action="{{ url_for('add_entry') }}" method="post" class="add-entry">
+      <dl>
+        <dt>Title:
+        <dd><input type="text" size=30 name="title">
+        <dt>Text:
+        <dd><textarea name="contents" rows=5 cols=40></textarea>
+        <dd><input type="submit" value="POST">
+      </dl>
+    </form>
+
+
+    <a href="{{ url_for('low_entry')}}">
+        <button>작은수부터</button>
+    </a>
+
+
+  <ul class="entries">
+  {% for entry in entries %}
+    <li><h2>{{ entry['title'] }}</h2>{{ entry['contents'] }}
+    <a href="{{ url_for('del_entry' , idx=entry['num']) }}">
+        <button>삭제</button>
+    </a>
+    <a class="modify-text">
+        <button>수정</button>
+        <div>
+            <form action="{{ url_for('modify_entry' , idx= entry['num']) }}" method="GET">
+                <dl>
+                <dt>Title:
+                <dd><input type="text" size=30 name="title">
+                <dt>Text:
+                <dd><textarea name="contents" rows=5 cols=40></textarea>
+                <dd><input type="submit">
+                </dl>
+            </form>
+        </div>
+    </a>
+    <a href="{{ url_for('minus_entry' , idx= entry['num']) }} ">
+        <button>{{ '-' }}</button>
+    </a>
+    {{ entry ['count'] }}
+    <a href="{{ url_for('plus_entry' , idx= entry['num']) }} ">
+        <button>{{ '+' }}</button>
+    </a>
+
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
+ </body>
+{% endblock %}
