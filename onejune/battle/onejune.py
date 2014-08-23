@@ -79,6 +79,7 @@ def guess(record):
     # from the second hit go for this
 
     def hitHard():
+        turn_up = record.data['turn_up']
         direction = record.data['direction']
         if turn_up==True && log['result']==Record.Status.MISSED:
             x = record.data['origin_x']
@@ -162,8 +163,6 @@ def guess(record):
         turn = 1
         record.data['turn'] = turn
         print turn  # to check
-        trick = 'False'
-        record.data['trick'] = trick
 
         # check hit flag
         turn_up = False
@@ -218,7 +217,6 @@ def guess(record):
         turn_up = record.data['turn_up']
 
         # checking for ships
-        trick = record.data['trick']
         ship_id = record.data['ship_id']
         ships_alive = record.get_remaining_ships()
         sunk_ship = [ship for ship in ship_id if ship not in ships_alive]
@@ -239,19 +237,19 @@ def guess(record):
 
 
         # decide the mode
-        if log['result'] == Record.Status.MISSED && turn_up == False:
+        if log['result'] == Record.Status.MISSED and turn_up == False:
 
             # if there was no hit but only miss
 
             randomAttack(total_quads)
 
-        elif log['result'] == Record.Status.MISSED && turn_up == True:
+        elif log['result'] == Record.Status.MISSED and turn_up == True:
             hitHard()
 
-        elif log['result'] == Record.Status.HIT && turn_up == True:
+        elif log['result'] == Record.Status.HIT and turn_up == True:
             hitHard()
 
-        elif log['result'] == Record.Status.HIT && turn_up == False:
+        elif log['result'] == Record.Status.HIT and turn_up == False:
             firstHit()
 
         elif log['result'] == Record.Status.SINK:
@@ -265,5 +263,4 @@ def guess(record):
             return x, y
         else:
             print 'something WRONG in DECIDE MODE'
-
 
