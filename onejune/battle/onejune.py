@@ -178,8 +178,9 @@ def guess(record):
                     return x, y
                 else:
                     direction = 'left'
-                    record.data['direction'] = direction
                     print 'change direction to left'
+                    x, y = backtoOriginal()
+                    return x, y
             if direction == 'left':
                 if x-1 in range(10) and record.get_status_at(x - 1, y) == Board.Status.EMPTY:
                     x = x - 1
@@ -187,9 +188,9 @@ def guess(record):
                     return x, y
                 else:
                     direction = 'up'
-                    record.data['direction'] = direction
                     print 'change direction to up'
-
+                    x, y = backtoOriginal()
+                    return x, y
             if direction == 'up':
                 if y+1 in range(10) and record.get_status_at(x, y + 1) == Board.Status.EMPTY:
                     y = y + 1
@@ -197,8 +198,9 @@ def guess(record):
                     return x, y
                 else:
                     direction = 'down'
-                    record.data['direction'] = direction
                     print 'change direction to down'
+                    x, y = backtoOriginal()
+                    return x, y                    
             if direction == 'down':
                 if y-1 in range(10) and record.get_status_at(x, y - 1) == Board.Status.EMPTY:
                     y = y - 1
@@ -206,7 +208,6 @@ def guess(record):
                     return x, y
                 else:
                     print 'end of direction?? continue hit ERROR'
-            
         else:
             print 'hitHard ERROR!!'
 
@@ -221,6 +222,28 @@ def guess(record):
         record.data['origin_y'] = None
         print sunk_ship, ' WENT DOWN!!'
 
+    # the last shot was hit but the targeted point has also been shot
+    # when turn up is true 
+    def backtoOriginal():
+        x = record.data['origin_x']
+        y = record.data['origin_y']
+        if x-1 in range(10) and record.get_status_at(x-1, y) == Board.Status.EMPTY:
+            x = x-1
+            record.data['direction'] = 'left'
+            print 'goback and attack >> ', record.data['direction'], (x, y)
+            return x, y
+        elif y+1 in range(10) and record.get_status_at(x, y+1) == Board.Status.EMPTY:
+            y = y+1
+            record.data['direction'] = 'up'
+            print 'goback and attack >> ', record.data['direction'], (x, y)
+            return x, y
+        elif y-1 in range(10) and record.get_status_at(x, y-1) == Board.Status.EMPTY:
+            y = y-1
+            record.data['direction'] = 'down'
+            print 'goback and attack >> ', record.data['direction'], (x, y)
+            return x, y
+        else: 
+            print 'fucking ERROR back to Origin'
 
 
     log = record.get_latest()
@@ -328,6 +351,7 @@ def guess(record):
             return x, y
         elif log['result'] == Record.Status.SINK:
             sinkHard()
+            print total_quads
             x, y = randomAttack(total_quads)
             return x, y
         elif log['result'] == Record.Status.WIN:
