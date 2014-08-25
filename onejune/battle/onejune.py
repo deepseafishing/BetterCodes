@@ -5,152 +5,217 @@ def guess(record):
     # random attack
 
     def randomAttack(total_quads):
-
+        print 'RANDOM ATTACK !!' # to check
+        randomhit = record.data['randomhit']
+        randomhit = randomhit + 1
+        record.data['randomhit'] = randomhit
+        print 'this is randomhit >>  ', randomhit
         # choose random point according to turn
-        if turn == 50:
+        if randomhit == 50:
             x = total_quads[2][0][0]
             y = total_quads[2][0][1]
-            print (x, y)
+            print 'randomhit point >>> ', (x, y)
             return x, y
-        elif turn == 51:
+        elif randomhit == 51:
             x = 0
             y = 0
-            print (x, y)
+            print 'over the random' 
             return x, y
-        elif turn % 12 in [1, 2, 3]:
-            x = total_quads[0][0][0]
-            y = total_quads[0][0][1]
-            print (x, y)
-            return x, y
-        elif turn % 12 in [4, 5, 6]:
-            x = total_quads[1][0][0]
-            y = total_quads[1][0][1]
-            print (x, y)
-            return x, y
-        elif turn % 12 in [7, 8, 9]:
-            x = total_quads[2][0][0]
-            y = total_quads[2][0][1]
-            print (x, y)
-            return x, y
-        elif turn % 12 in [10, 11, 0]:
-            x = total_quads[3][0][0]
-            y = total_quads[3][0][1]
-            print (x, y)
-            return x, y
-
+        elif randomhit % 12 in [1, 2, 3]:
+            if total_quads[0] != []:
+                x = total_quads[0][0][0]
+                y = total_quads[0][0][1]
+                print 'randomhit point >>> ', (x, y)
+                return x, y
+            else:
+                for quad in [1,2,3]:
+                    if total_quads[quad] != []:
+                        x = total_quads[quad][0][0]
+                        y = total_quads[quad][0][1]
+                        break
+                print 'randomhit point >>> ', (x, y)
+                return x, y
+        elif randomhit % 12 in [4, 5, 6]:
+            if total_quads[1] != []:
+                x = total_quads[1][0][0]
+                y = total_quads[1][0][1]
+                print 'randomhit point >>> ', (x, y)
+                return x, y
+            else:
+                for quad in [0,2,3]:
+                    if total_quads[quad] != []:
+                        x = total_quads[quad][0][0]
+                        y = total_quads[quad][0][1]
+                        break
+                print 'randomhit point >>> ', (x, y)
+                return x, y
+        elif randomhit % 12 in [7, 8, 9]:
+            if total_quads[2] != []:
+                x = total_quads[2][0][0]
+                y = total_quads[2][0][1]
+                print 'randomhit point >>> ', (x, y)
+                return x, y
+            else:
+                for quad in [0,1,3]:
+                    if total_quads[quad] != []:
+                        x = total_quads[quad][0][0]
+                        y = total_quads[quad][0][1]
+                        break
+                print 'randomhit point >>> ', (x, y)
+                return x, y
+        elif randomhit % 12 in [10, 11, 0]:
+            if total_quads[3] != []:
+                x = total_quads[3][0][0]
+                y = total_quads[3][0][1]
+                print 'randomhit point >>> ', (x, y)
+                return x, y
+            else:
+                for quad in [0,1,2]:
+                    if total_quads[quad] != []:
+                        x = total_quads[quad][0][0]
+                        y = total_quads[quad][0][1]
+                        break 
+                print 'randomhit point >>> ', (x, y)
+                return x, y
+        else:
+            print 'end of random Attack'        
     # the first hit
 
     def firstHit():
         direction = record.data['direction']
-
+        print 'FIRST HIT !!' # to check
         origin_x = log['guess']['x']
         origin_y = log['guess']['y']
         record.data['origin_x'] = origin_x
         record.data['origin_y'] = origin_y
         x = log['guess']['x']
         y = log['guess']['y']
+        print 'this is origin >> ', (origin_x, origin_y)
+        print 'this is lastest >> ', (x, y)
         # turn up!
         turn_up = True
         record.data['turn_up'] = turn_up
 
         # right, left, up, down
 
-        if record.get_status_at(x + 1)(y) == Board.Status.EMPTY:
+        if x+1 in range(10) and record.get_status_at(x + 1, y) == Board.Status.EMPTY:
             x = x + 1
             direction = 'right'
+            record.data['direction'] = direction
+            print 'first hit >> ', direction, (x, y)
             return x, y
-        elif record.get_status_at(x - 1)(y) == Board.Status.EMPTY:
+        elif x-1 in range(10) and record.get_status_at(x - 1, y) == Board.Status.EMPTY:
             x = x - 1
             direction = 'left'
+            record.data['direction'] = direction
+            print 'first hit >> ', direction, (x, y)
             return x, y
-        elif record.get_status_at(x)(y + 1) == Board.Status.EMPTY:
+        elif y+1 in range(10) and record.get_status_at(x, y + 1) == Board.Status.EMPTY:
             y = y + 1
             direction = 'up'
+            record.data['direction'] = direction
+            print 'first hit >> ', direction, (x, y)
             return x, y
-        elif record.get_status_at(x)(y - 1) == Board.Status.EMPTY:
+        elif y-1 in range(10) and record.get_status_at(x, y - 1) == Board.Status.EMPTY:
             y = y - 1
             direction = 'down'
+            record.data['direction'] = direction
+            print 'first hit >> ', direction, (x, y)
             return x, y
         else:
             print 'first hit ERROR!!'
 
-        record.data['direction'] = direction
-
     # from the second hit go for this
 
     def hitHard():
+        print 'HIT HARD !!' # to check
+
         turn_up = record.data['turn_up']
         direction = record.data['direction']
-        if turn_up==True && log['result']==Record.Status.MISSED:
+        print 'turnup and direction >> ', turn_up, direction, log['result']
+        if turn_up==True and log['result']==Record.Status.MISSED:
+            print 'LAST Missed'
             x = record.data['origin_x']
             y = record.data['origin_y']
 
-            if record.get_status_at(x + 1)(y)==Board.Status.EMPTY:
+            if x+1 in range(10) and record.get_status_at(x + 1, y)==Board.Status.EMPTY:
                 x = x + 1
                 direction = 'right'
+                record.data['direction'] = direction
+                print 'miss right', (x, y)
                 return x, y
-            elif record.get_status_at(x - 1)(y)==Board.Status.EMPTY:
+            elif x-1 in range(10) and record.get_status_at(x - 1, y)==Board.Status.EMPTY:
                 x = x - 1
                 direction = 'left'
+                record.data['direction'] = direction
+                print 'miss left', (x, y)
                 return x, y
-            elif record.get_status_at(x)(y + 1)==Board.Status.EMPTY:
+            elif y+1 in range(10) and record.get_status_at(x, y + 1)==Board.Status.EMPTY:
                 y = y + 1
                 direction = 'up'
+                record.data['direction'] = direction
+                print 'miss up', (x, y)
                 return x, y
-            elif record.get_status_at(x)(y - 1) == Board.Status.EMPTY:
+            elif y-1 in range(10) and record.get_status_at(x, y - 1) == Board.Status.EMPTY:
                 y = y - 1
                 direction = 'down'
+                record.data['direction'] = direction
+                print 'miss down', (x, y)
                 return x, y
             else:
                 print 'turn_up True and status empty ERROR!!'
 
-            record.data['direction'] = direction
 
-        elif turn_up == True && log['result'] == Record.Status.HIT:
+        elif turn_up == True and log['result'] == Record.Status.HIT:
+            print 'LAST Hit'
             x = log['guess']['x']
             y = log['guess']['y']
+            print 'hit again but not sink yet at >> ', (x, y)
             if direction == 'right':
-                if record.get_status_at(x + 1, y) == Board.Status.EMPTY:
+                if x+1 in range(10) and record.get_status_at(x + 1, y) == Board.Status.EMPTY:
                     x = x + 1
+                    print 'continue hit >> ', (x, y)
                     return x, y
                 else:
                     direction = 'left'
                     record.data['direction'] = direction
                     print 'change direction to left'
-            elif direction == 'left':
-                if record.get_status_at(x - 1, y) == Board.Status.EMPTY:
+            if direction == 'left':
+                if x-1 in range(10) and record.get_status_at(x - 1, y) == Board.Status.EMPTY:
                     x = x - 1
+                    print 'continue hit >> ', (x, y)
                     return x, y
                 else:
                     direction = 'up'
                     record.data['direction'] = direction
                     print 'change direction to up'
 
-            elif direction == 'up':
-                if record.get_status_at(x, y + 1) == Board.Status.EMPTY:
+            if direction == 'up':
+                if y+1 in range(10) and record.get_status_at(x, y + 1) == Board.Status.EMPTY:
                     y = y + 1
+                    print 'continue hit >> ', (x, y)
                     return x, y
                 else:
                     direction = 'down'
                     record.data['direction'] = direction
                     print 'change direction to down'
-            elif direction == 'down':
-                if record.get_status_at(x, y - 1) == Board.Status.EMPTY:
+            if direction == 'down':
+                if y-1 in range(10) and record.get_status_at(x, y - 1) == Board.Status.EMPTY:
                     y = y - 1
+                    print 'continue hit >> ', (x, y)
                     return x, y
                 else:
-                    direction = None
-                    record.data['direction'] = direction
-                    print 'end of direction??'
-            else:
-                print 'turn_up True and status hit ERROR!!'
+                    print 'end of direction?? continue hit ERROR'
+            
         else:
             print 'hitHard ERROR!!'
 
     # when the ship went down
 
     def sinkHard():
+        print 'SINK HARD !!' # to check
         turn_up = False
+        record.data['direction'] = 'newstart'
         record.data['turn_up'] = turn_up
         record.data['origin_x'] = None
         record.data['origin_y'] = None
@@ -163,16 +228,19 @@ def guess(record):
         turn = 1
         record.data['turn'] = turn
         print turn  # to check
-
+        # initialize random hit
+        randomhit = 1
+        record.data['randomhit'] = randomhit
+        print 'this is randomhit >> ', randomhit
+        # initialize direction
+        record.data['direction'] = 'start'
         # check hit flag
         turn_up = False
         record.data['turn_up'] = turn_up
         # checking for ships
 
-        record.data['turn'] = turn
         ship_id = range(1, 6)
         record.data['ship_id'] = ship_id
-        print turn  # to check
 
         # divide the board into 4 quadrants and random attack
 
@@ -189,9 +257,15 @@ def guess(record):
         third_quad = map(lambda (x, y): (x + 5, y + 5), first_quad)
         fourth_quad = map(lambda (x, y): (x - 5, y + 5), second_quad)
         total_quads = [first_quad, second_quad, third_quad, fourth_quad]
+        for quad in total_quads:
+            for crd in quad:
+                random.shuffle(quad)        
+
         record.data['total_quads'] = total_quads
         x = total_quads[0][0][0]
         y = total_quads[0][0][1]
+        print total_quads
+        print 'first turn point >> ', (x, y)
         return x, y
 
     else:
@@ -199,14 +273,15 @@ def guess(record):
 
         turn = record.data['turn'] + 1
         record.data['turn'] = turn
-        print turn  # to check
+        print 'number of call>>', turn  # to check
         total_quads = record.data['total_quads']
 
         # get the only empty points and then shuffle
-
+        print total_quads # to check
         for quad in total_quads:
             for crd in quad:
                 if record.get_status_at(crd[0], crd[1]) != Board.Status.EMPTY:
+                    print 'the removed point >> ', (crd[0], crd[1])
                     quad.remove(crd)
             random.shuffle(quad)
         print total_quads  # to check
@@ -231,31 +306,30 @@ def guess(record):
 
         record.data['ship_id'] = ship_id
         record.data['turn_up'] = turn_up
-        print ship_id  # to check
-        print sunk_ship  # to check
-        print empty_ship  # to check
+        print 'this is ship_id >> ', ship_id  # to check
+        print 'this is sunk_ship >> ', sunk_ship  # to check
 
-
+        print log
         # decide the mode
         if log['result'] == Record.Status.MISSED and turn_up == False:
 
             # if there was no hit but only miss
-
-            randomAttack(total_quads)
-
+            x, y = randomAttack(total_quads)
+            return x, y
         elif log['result'] == Record.Status.MISSED and turn_up == True:
-            hitHard()
-
+            x, y = hitHard()
+            return x, y
         elif log['result'] == Record.Status.HIT and turn_up == True:
-            hitHard()
+            x, y = hitHard()
+            return x, y
 
         elif log['result'] == Record.Status.HIT and turn_up == False:
-            firstHit()
-
+            x, y = firstHit()
+            return x, y
         elif log['result'] == Record.Status.SINK:
             sinkHard()
-            randomAttack(total_quads)
-
+            x, y = randomAttack(total_quads)
+            return x, y
         elif log['result'] == Record.Status.WIN:
             print 'I WON!!'
             x = 0
